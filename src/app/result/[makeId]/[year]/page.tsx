@@ -1,16 +1,5 @@
-import {Suspense} from "react";
 import {FilterMenu} from "@/components/ui/filter";
-import dynamic from "next/dynamic";
-import {Card, CardContent} from "@/components/ui/card";
-
-const DynamicComponent = dynamic(() => import("./result"), {
-    loading: () => <Card className={"mx-auto lg:w-3/5 md:w-3/4 sm:w-full h-fit bg-background border-r-4 text-center font-bold text-2xl text-red-500 p-12"}>
-                        <CardContent>
-                            Loading...
-                        </CardContent>
-                    </Card>,
-    ssr: false,
-});
+import Result from "./result"
 
 export async function generateStaticParams() {
     const apiUrl = process.env.NEXT_PUBLIC_URL_GET_MAKES;
@@ -47,15 +36,7 @@ const Page = ({ params }: { params: { makeId: string; year: string } }) => {
     return (
         <main className={"w-full h-screen lg:pt-12 md:pt-8 sm:pt-4"}>
             <FilterMenu/>
-            <Suspense fallback={
-                <Card className={"mx-auto lg:w-3/5 md:w-3/4 sm:w-full h-fit bg-background border-r-4 text-center font-bold text-2xl text-red-500 p-12"}>
-                    <CardContent>
-                        Loading...
-                    </CardContent>
-                </Card>
-            }>
-                <DynamicComponent makeId={makeId} year={year} />
-            </Suspense>
+            <Result makeId={makeId} year={year} />
         </main>
     );
 };
